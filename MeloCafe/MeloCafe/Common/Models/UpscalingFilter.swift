@@ -23,10 +23,10 @@ enum UpscalingFilter: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .linear: return "Linear"
-        case .bicubic: return "Bicubic"
-        case .bicubicHermite: return "Bicubic Hermite"
-        case .nearestNeighbor: return "Nearest Neighbor"
+        case .linear: return "线性"
+        case .bicubic: return "双三次"
+        case .bicubicHermite: return "双三次 Hermite"
+        case .nearestNeighbor: return "最近邻"
         }
     }
 }
