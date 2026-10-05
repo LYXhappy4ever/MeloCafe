@@ -19,18 +19,20 @@ struct EmulationView: View {
     @State private var showingEmulatedDevices = false
     @ObservedObject private var configManager = ConfigManager.shared
     @ObservedObject private var air = Air.shared
+    @EnvironmentObject private var gameManager: GamesManager
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+    @Environment(\.scenePhase) private var scenePhase
+
     private var visibleScreens: [Bool] {
         if air.connected { return [false] }
         if screenLayout.showsBothScreens { return swapped ? [false, true] : [true, false] }
         return [!swapped]
     }
-    
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            
+
             GeometryReader { geometry in
                 let portrait = geometry.size.height >= geometry.size.width
                 if screenLayout == .smallGamePadTopRight && !air.connected {
@@ -50,21 +52,35 @@ struct EmulationView: View {
                 }
             }
             .ignoresSafeArea(.all, edges: verticalSizeClass == .regular ? .horizontal : .all)
-            
+
             if controllerManager.hasVirtual() {
                 ControllerView(controller: controllerHandler, isEditing: false)
             }
         }
         .overlay(alignment: .topLeading) {
-            if showSwapButton && screenLayout == .singleScreen && !air.connected {
-                Button {
-                    swapped.toggle()
-                } label: {
-                    ButtonView(controller: controllerHandler, disabled: true, button: .swap, opacity: 0.8)
+            Menu {
+                if showSwapButton && screenLayout == .singleScreen && !air.connected {
+                    Button {
+                        swapped.toggle()
+                    } label: {
+                        Label("切换 TV / GamePad", systemImage: "rectangle.2.swap")
+                    }
                 }
-                .accessibilityLabel("Swap TV and GamePad") // i'm not sure who would need this because you would need to be able to see the screen itself but might as well -stossy11
-                .padding(10)
+
+                Button(role: .destructive) {
+                    gameManager.stopEmulation()
+                } label: {
+                    Label("返回 MeloCafe", systemImage: "arrow.backward.circle")
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(.black.opacity(0.6), in: Circle())
             }
+            .accessibilityLabel("游戏菜单")
+            .padding(10)
         }
         .statusBarHidden(true)
         .overlay(alignment: .topTrailing) {
@@ -80,7 +96,7 @@ struct EmulationView: View {
                         .frame(width: 44, height: 44)
                         .background(.black.opacity(0.6), in: Circle())
                 }
-                .accessibilityLabel("Emulated Devices")
+                .accessibilityLabel("模拟外设")
                 .sheet(isPresented: $showingEmulatedDevices) {
                     EmulatedDevicesView()
                 }
@@ -94,24 +110,46 @@ struct EmulationView: View {
         .onChange(of: swapped) { _ in updateVisibleOutputs() }
         .onChange(of: screenLayout) { _ in updateVisibleOutputs() }
         .onChange(of: air.connected) { _ in updateVisibleOutputs() }
+        .onChange(of: scenePhase) { phase in
+            handleScenePhase(phase)
+        }
         .onDisappear {
             Air.stop()
+            cemuPadView.cancelActiveTouches()
             CemuUIKit_SetVisibleOutputs(false, false)
         }
     }
-    
+
     private var screens: some View {
         ForEach(visibleScreens, id: \.self) { main in
             MetalViewContainer(metalView: main ? cemuView : cemuPadView)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-    
+
+    private func handleScenePhase(_ phase: ScenePhase) {
+        switch phase {
+        case .active:
+            controllerManager.virtualController.resumeMotionAfterForeground()
+            cemuView.updateDrawableSize()
+            cemuPadView.updateDrawableSize()
+            cemuView.setNeedsDisplay()
+            cemuPadView.setNeedsDisplay()
+            updateVisibleOutputs()
+        case .inactive, .background:
+            controllerManager.virtualController.suspendMotionForBackground()
+            cemuPadView.cancelActiveTouches()
+            CemuUIKit_SetVisibleOutputs(false, false)
+        @unknown default:
+            break
+        }
+    }
+
     private func updateVisibleOutputs() {
         let both = air.connected || screenLayout.showsBothScreens
-        
+
         CemuUIKit_SetVisibleOutputs(both || !swapped, both || swapped)
-        
+
         if !both && !swapped { cemuPadView.cancelActiveTouches() }
     }
 }
