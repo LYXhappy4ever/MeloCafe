@@ -14,20 +14,20 @@ enum ScreenLayout: String, CaseIterable {
 
     var string: String {
         switch self {
-        case .singleScreen: return "Single Screen"
-        case .bothScreens: return "Adaptive (Both Screens)"
-        case .smallGamePadTopRight: return "Both Screens (GamePad Top Right)"
+        case .singleScreen: return "单屏"
+        case .bothScreens: return "自适应双屏"
+        case .smallGamePadTopRight: return "双屏（GamePad 位于右上角）"
         }
     }
 
     var description: String {
         switch self {
         case .singleScreen:
-            return "Only the selected screen renders. Use the swap button to switch between TV and GamePad."
+            return "仅渲染选中的屏幕。使用切换按钮在电视与 GamePad 之间切换。"
         case .bothScreens:
-            return "TV and GamePad automatically adjust: stacked in portrait and side by side in landscape."
+            return "电视与 GamePad 画面自动调整：竖屏时上下排列，横屏时左右并排。"
         case .smallGamePadTopRight:
-            return "A small GamePad appears at the top right in its own column beside the TV View."
+            return "小尺寸 GamePad 画面位于右上角，在电视画面旁单独占一列。"
         }
     }
     
