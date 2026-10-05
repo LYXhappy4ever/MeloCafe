@@ -80,6 +80,12 @@ class GamesManager: ObservableObject {
         startedEmulation = true
     }
 
+    func stopEmulation() {
+        guard startedEmulation else { return }
+        CemuManager.restartCoreForMenu()
+        startedEmulation = false
+    }
+
     func handleDeepLink(_ url: URL) {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
 
