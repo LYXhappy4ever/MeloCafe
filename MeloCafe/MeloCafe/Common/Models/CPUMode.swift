@@ -30,9 +30,9 @@ public enum CPUMode: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .interpreter: return "Interpreter"
-        case .recompiler: return "Recompiler (JIT)"
-        case .auto: return "Auto"
+        case .interpreter: return "解释器"
+        case .recompiler: return "重编译器（JIT）"
+        case .auto: return "自动"
         }
     }
 }
