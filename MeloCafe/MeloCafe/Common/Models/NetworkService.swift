@@ -26,10 +26,10 @@ enum NetworkService: Int, CaseIterable, Identifiable {
 
     var string: String {
         switch self {
-        case .offline: return "Offline"
-        case .nintendo: return "Nintendo Network"
-        case .pretendo: return "Pretendo Network"
-        case .custom: return "Custom"
+        case .offline: return "离线"
+        case .nintendo: return "任天堂网络"
+        case .pretendo: return "Pretendo 网络"
+        case .custom: return "自定义"
         }
     }
 }
