@@ -80,13 +80,13 @@ class AppAlerts {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         for actionTitle in actions {
-            alert.addAction(UIAlertAction(title: actionTitle, style: .default) { _ in
+            alert.addAction(UIAlertAction(title: actionTitle == "OK" ? "确定" : actionTitle, style: .default) { _ in
                 alertHandler(actionTitle)
             })
         }
         
         if hasCancel {
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            alert.addAction(UIAlertAction(title: "取消", style: .cancel) { _ in
                 alertHandler("Cancel")
             })
         }
@@ -116,13 +116,13 @@ class AppAlerts {
             
             alert.textFields![0].text = defaultText
             
-            alert.addAction(UIAlertAction(title: action, style: .default) { _ in
+            alert.addAction(UIAlertAction(title: action == "OK" ? "确定" : action, style: .default) { _ in
                 let answer = alert.textFields![0]
                 
                 continuation.resume(returning: answer.text)
             })
             
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            alert.addAction(UIAlertAction(title: "取消", style: .cancel) { _ in
                 continuation.resume(returning: defaultText)
             })
             
@@ -147,13 +147,13 @@ class AppAlerts {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             
             for actionTitle in actions {
-                alert.addAction(UIAlertAction(title: actionTitle, style: .default) { _ in
+                alert.addAction(UIAlertAction(title: actionTitle == "OK" ? "确定" : actionTitle, style: .default) { _ in
                     continuation.resume(returning: actionTitle)
                 })
             }
             
             if hasCancel {
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                alert.addAction(UIAlertAction(title: "取消", style: .cancel) { _ in
                     continuation.resume(returning: "Cancel")
                 })
             }
