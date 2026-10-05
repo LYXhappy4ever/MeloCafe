@@ -49,7 +49,7 @@ struct GameGraphicPacksView: View {
                     Button {
                         viewModel.downloadPacks()
                     } label: {
-                        Label("Download latest graphic packs", systemImage: "arrow.down.circle")
+                        Label("下载最新图形包", systemImage: "arrow.down.circle")
                     }
                 }
 
@@ -64,9 +64,9 @@ struct GameGraphicPacksView: View {
                 Section {
                     if #available(iOS 17.0, *) {
                         ContentUnavailableView(
-                            "No Graphic Packs",
+                            "没有图形包",
                             systemImage: "photo.stack",
-                            description: Text("No graphic packs are available for \(gameName).")
+                            description: Text("没有适用于 \(gameName) 的图形包。")
                         )
                     } else {
                         VStack(spacing: 20) {
@@ -76,11 +76,11 @@ struct GameGraphicPacksView: View {
                                 .font(.system(size: 64))
                                 .foregroundColor(.secondary)
 
-                            Text("No Graphic Packs")
+                            Text("没有图形包")
                                 .font(.title2)
                                 .fontWeight(.semibold)
 
-                            Text("No graphic packs are available for \(gameName).")
+                            Text("没有适用于 \(gameName) 的图形包。")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
@@ -102,8 +102,8 @@ struct GameGraphicPacksView: View {
                 }
             }
         }
-        .searchable(text: $searchText, prompt: "Search graphic packs")
-        .navigationTitle("\(gameName) Graphic Packs")
+        .searchable(text: $searchText, prompt: "搜索图形包")
+        .navigationTitle("\(gameName) 的图形包")
         .onAppear {
             viewModel.refresh()
         }
