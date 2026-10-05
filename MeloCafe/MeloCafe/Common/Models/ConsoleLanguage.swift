@@ -31,18 +31,18 @@ enum ConsoleLanguage: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .japanese: return "Japanese"
-        case .english: return "English"
-        case .french: return "French"
-        case .german: return "German"
-        case .italian: return "Italian"
-        case .spanish: return "Spanish"
-        case .chinese: return "Chinese"
-        case .korean: return "Korean"
-        case .dutch: return "Dutch"
-        case .portuguese: return "Portuguese"
-        case .russian: return "Russian"
-        case .taiwanese: return "Taiwanese"
+        case .japanese: return "日语"
+        case .english: return "英语"
+        case .french: return "法语"
+        case .german: return "德语"
+        case .italian: return "意大利语"
+        case .spanish: return "西班牙语"
+        case .chinese: return "简体中文"
+        case .korean: return "韩语"
+        case .dutch: return "荷兰语"
+        case .portuguese: return "葡萄牙语"
+        case .russian: return "俄语"
+        case .taiwanese: return "繁体中文"
         }
     }
 }
