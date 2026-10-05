@@ -13,7 +13,7 @@ extension GamesListView {
         Button {
             self.activeSheet = .graphicPacks(game: game)
         } label: {
-            Text("Graphic Packs")
+            Text("图形包")
         }
 
     }
