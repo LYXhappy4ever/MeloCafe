@@ -159,6 +159,17 @@ final class VirtualController {
             UIDevice.current.endGeneratingDeviceOrientationNotifications()
         }
     }
+
+    func suspendMotionForBackground() {
+        guard attached else { return }
+        stopMotion()
+    }
+
+    func resumeMotionAfterForeground() {
+        guard attached else { return }
+        stopMotion()
+        startMotion()
+    }
     
     private func updateMotion(from m: CMDeviceMotion) {
         var mo = GCBridgeMotionState()
@@ -178,14 +189,14 @@ final class VirtualController {
             a = SIMD3(  ax, -ay, -az)
             g = SIMD3(  gx, -gy, -gz)
         case .landscapeRight:
-            a = SIMD3(  ay,  ax, -az)
-            g = SIMD3(  gy,  gx, -gz)
+            a = SIMD3(  ay, -ax,  az)
+            g = SIMD3(  gy, -gx,  gz)
         case .portraitUpsideDown:
             a = SIMD3( -ax,  ay, -az)
             g = SIMD3( -gx,  gy, -gz)
         case .landscapeLeft:
-            a = SIMD3( -ay, -ax, -az)
-            g = SIMD3( -gy, -gx, -gz)
+            a = SIMD3( -ay,  ax,  az)
+            g = SIMD3( -gy,  gx,  gz)
         case .unknown, .faceUp, .faceDown:
             a = SIMD3(  ax, -ay, -az)
             g = SIMD3(  gx, -gy, -gz)
