@@ -56,7 +56,7 @@ struct GamesListView: View {
                                     try? FileManager.default.copyItem(at: url, to: .romsURL.appendingPathComponent(url.lastPathComponent))
                                 }
                             case .failure(let err):
-                                AppAlerts.showSyncAlert(title: "ROM Import Failed.", message: err.localizedDescription)
+                                AppAlerts.showSyncAlert(title: "游戏导入失败", message: err.localizedDescription)
                             }
                         }
                     } label: {
