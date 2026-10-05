@@ -26,12 +26,12 @@ struct ContentView: View {
                 TabView {
                     GamesListView()
                         .tabItem {
-                            Label("Games", systemImage: "house.fill")
+                            Label("游戏", systemImage: "house.fill")
                         }
 
                     SettingsView()
                         .tabItem {
-                            Label("Settings", systemImage: "gearshape.fill")
+                            Label("设置", systemImage: "gearshape.fill")
                         }
                 }
             }
