@@ -24,7 +24,7 @@ enum ControllerType: UInt8, CaseIterable, Identifiable {
         case .Pro:
             return "Pro"
         case .Classic:
-            return "Classic"
+            return "经典"
         case .Wiimote:
             return "Wiimote"
         default:
