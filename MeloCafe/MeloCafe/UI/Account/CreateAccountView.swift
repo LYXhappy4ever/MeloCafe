@@ -25,8 +25,8 @@ struct CreateAccountView: View {
             Form {
                 Section {
                     HStack {
-                        Text("PersistentId")
-                        TextField("PersistentId", text: $persistentIdText)
+                        Text("持久 ID")
+                        TextField("持久 ID", text: $persistentIdText)
                             .multilineTextAlignment(.trailing)
                             .font(.body.monospaced())
                             .keyboardType(.asciiCapable)
@@ -34,8 +34,8 @@ struct CreateAccountView: View {
                             .autocorrectionDisabled()
                     }
                     HStack {
-                        Text("Mii name")
-                        TextField("Mii name", text: $miiName)
+                        Text("Mii 名称")
+                        TextField("Mii 名称", text: $miiName)
                             .multilineTextAlignment(.trailing)
                             .focused($nameFocused)
                             .submitLabel(.done)
@@ -48,20 +48,20 @@ struct CreateAccountView: View {
                             }
                         }
                 } footer: {
-                    Text("The persistent id is the internal folder name used for your saves. Only change this if you are importing saves from a Wii U with a specific id.")
+                    Text("持久 ID 是保存存档的内部文件夹名称。仅在导入具有特定 ID 的 Wii U 存档时修改。")
                 }
             }
-            .navigationTitle("Create new account")
+            .navigationTitle("创建新账户")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("取消") {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("OK") {
+                    Button("确定") {
                         createAccount()
                     }
                 }
@@ -69,11 +69,11 @@ struct CreateAccountView: View {
         }
         .frame(idealWidth: 440, idealHeight: 320)
         .onAppear { nameFocused = true }
-        .alert("Error", isPresented: Binding(
+        .alert("错误", isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { errorMessage = nil }
+            Button("确定", role: .cancel) { errorMessage = nil }
         } message: {
             Text(errorMessage ?? "")
         }
@@ -82,16 +82,16 @@ struct CreateAccountView: View {
     private func createAccount() {
         let idString = persistentIdText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !idString.isEmpty else {
-            errorMessage = "No persistent id entered!"
+            errorMessage = "未输入持久 ID！"
             return
         }
         
         guard configManager.canCreateAccount else {
-            errorMessage = configManager.accountControlsLocked ? "Can't create an account while a game is running!" : "Maximum account limit reached."
+            errorMessage = configManager.accountControlsLocked ? "游戏运行期间无法创建账户！" : "已达到账户数量上限。"
             return
         }
         guard let persistentId = UInt32(idString, radix: 16) else {
-            errorMessage = "Enter a valid hexadecimal persistent id."
+            errorMessage = "请输入有效的十六进制持久 ID。"
             return
         }
         guard persistentId >= configManager.minimumAccountPersistentId else {
@@ -108,7 +108,7 @@ struct CreateAccountView: View {
         }
         
         guard !miiName.isEmpty else {
-            errorMessage = "Account name may not be empty!"
+            errorMessage = "账户名称不能为空！"
             return
         }
         
