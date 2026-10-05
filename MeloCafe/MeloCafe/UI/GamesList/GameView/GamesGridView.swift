@@ -16,11 +16,11 @@ enum CardType: String, Codable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .list: "List"
-        case .card: "Card"
-        case .compactCard: "Compact Card"
-        case .compactCardNoBackground: "Compact Card (No Background)"
-        case .compactCardSmall: "Compact Card (Small)"
+        case .list: "列表"
+        case .card: "卡片"
+        case .compactCard: "紧凑卡片"
+        case .compactCardNoBackground: "紧凑卡片（无背景）"
+        case .compactCardSmall: "紧凑卡片（小尺寸）"
         }
     }
 }
