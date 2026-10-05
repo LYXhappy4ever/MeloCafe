@@ -7,37 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4E1700AD2F5BB42D00B278B3 /* libCemuInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E17009F2F5BB42D00B278B3 /* libCemuInput.a */; };
 		4E36B5902F824F28009A2F1A /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E95F4372F5A950A003D2387 /* GameController.framework */; };
-		4E36B5952F824F31009A2F1A /* Cemu.framework/Cemu in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */; };
-		4E36B5962F824F31009A2F1A /* Cemu.framework/Cemu in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4E36B5952F824F31009A2F1A /* Cemu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */; };
+		4E36B5962F824F31009A2F1A /* Cemu.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4E442DAE2F5D5C5700DD0F47 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E95F3FC2F599094003D2387 /* Metal.framework */; };
 		4E442DED2F5DB3EC00DD0F47 /* Melo-Controller in Frameworks */ = {isa = PBXBuildFile; productRef = 4E442DEC2F5DB3EC00DD0F47 /* Melo-Controller */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		4E1700942F5BB42D00B278B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83831450CC9041DC98859621;
-			remoteInfo = CemuBin;
-		};
-		4E17009E2F5BB42D00B278B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A8CC6C84B665409A91F84357;
-			remoteInfo = CemuInput;
-		};
-		4E91D2AC2FAF201B00353E63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4513260BE3F7F4A2E650E76D;
-			remoteInfo = ZERO_CHECK;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4E1B371B2F592B6F00D151B0 /* Embed Libraries */ = {
@@ -46,7 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4E36B5962F824F31009A2F1A /* Cemu.framework/Cemu in Embed Libraries */,
+				4E36B5962F824F31009A2F1A /* Cemu.framework in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,7 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cemuMain.xcodeproj; path = ../build/src/cemuMain.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4E1700952F5BB42D00B278B3 /* Cemu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cemu.framework; path = Prebuilt/Cemu.framework; sourceTree = "<group>"; };
 		4E1B36D72F5924AF00D151B0 /* MeloCafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeloCafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E95F3FC2F599094003D2387 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		4E95F4372F5A950A003D2387 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -109,29 +85,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E442DED2F5DB3EC00DD0F47 /* Melo-Controller in Frameworks */,
-				4E36B5952F824F31009A2F1A /* Cemu.framework/Cemu in Frameworks */,
+				4E36B5952F824F31009A2F1A /* Cemu.framework in Frameworks */,
 				4E442DAE2F5D5C5700DD0F47 /* Metal.framework in Frameworks */,
 				4E36B5902F824F28009A2F1A /* GameController.framework in Frameworks */,
-				4E1700AD2F5BB42D00B278B3 /* libCemuInput.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4E17002C2F5BB19300B278B3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */,
-				4E17009F2F5BB42D00B278B3 /* libCemuInput.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		4E1B36CE2F5924AF00D151B0 = {
 			isa = PBXGroup;
 			children = (
-				4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */,
 				4E1B36D92F5924AF00D151B0 /* MeloCafe */,
 				4EE53AF12F596CDF008E8A2A /* Frameworks */,
 				4E1B36D82F5924AF00D151B0 /* Products */,
@@ -149,6 +114,7 @@
 		4EE53AF12F596CDF008E8A2A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E1700952F5BB42D00B278B3 /* Cemu.framework */,
 				4E95F4392F5A950F003D2387 /* TouchController.framework */,
 				4E95F4372F5A950A003D2387 /* GameController.framework */,
 				4E95F3FC2F599094003D2387 /* Metal.framework */,
@@ -171,7 +137,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				4E91D2AD2FAF201B00353E63 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4E1B36D92F5924AF00D151B0 /* MeloCafe */,
@@ -215,12 +180,6 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4E1B36D82F5924AF00D151B0 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 4E17002C2F5BB19300B278B3 /* Products */;
-					ProjectRef = 4E1700292F5BB19300B278B3 /* cemuMain.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				4E1B36D62F5924AF00D151B0 /* MeloCafe */,
@@ -228,23 +187,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		4E1700952F5BB42D00B278B3 /* Cemu.framework/Cemu */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			name = Cemu.framework/Cemu;
-			path = Cemu.framework;
-			remoteRef = 4E1700942F5BB42D00B278B3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4E17009F2F5BB42D00B278B3 /* libCemuInput.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCemuInput.a;
-			remoteRef = 4E17009E2F5BB42D00B278B3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4E1B36D52F5924AF00D151B0 /* Resources */ = {
@@ -266,13 +208,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		4E91D2AD2FAF201B00353E63 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ZERO_CHECK;
-			targetProxy = 4E91D2AC2FAF201B00353E63 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4E1B36E02F5924B000D151B0 /* Debug */ = {
