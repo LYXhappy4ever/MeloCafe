@@ -11,7 +11,7 @@ enum Gender: Int, CaseIterable {
     case female = 0
     case male = 1
 
-    var title: String { self == .female ? "Female" : "Male" }
+    var title: String { self == .female ? "女" : "男" }
 }
 
 struct AccountEditorView: View {
@@ -19,11 +19,11 @@ struct AccountEditorView: View {
 
     var body: some View {
         Form {
-            Section("Account information") {
+            Section("账户信息") {
                 AccountInformationFields(account: account)
             }
         }
-        .navigationTitle("Account information")
+        .navigationTitle("账户信息")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -54,33 +54,33 @@ struct AccountInformationFields: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("PersistentId")
+                Text("持久 ID")
                 Spacer()
                 Text(account.persistentIdHex)
                     .font(.body.monospaced())
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
             }
-            .accessibilityHint("The persistent id is the internal folder name used for your saves")
+            .accessibilityHint("持久 ID 是保存存档的内部文件夹名称")
 
             HStack {
-                Text("Mii name")
-                TextField("Mii name", text: $name)
+                Text("Mii 名称")
+                TextField("Mii 名称", text: $name)
                     .multilineTextAlignment(.trailing)
                     .focused($focusedField, equals: .name)
                     .onChange(of: name) { name = String($0.prefix(10)) }
             }
-            .accessibilityHint("The Mii name is the profile name")
+            .accessibilityHint("Mii 名称是账户显示名称")
 
             HStack {
-                Text("Birthday")
+                Text("生日")
                 TextField("YYYY-MM-DD", text: $birthday)
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.numbersAndPunctuation)
                     .focused($focusedField, equals: .birthday)
             }
 
-            Picker("Gender", selection: Binding(
+            Picker("性别", selection: Binding(
                 get: { Gender(rawValue: currentAccount.gender) ?? .male },
                 set: { reportSave(configManager.setGender($0.rawValue, for: account.persistentId)) }
             )) {
@@ -91,8 +91,8 @@ struct AccountInformationFields: View {
             .pickerStyle(.menu)
 
             HStack {
-                Text("Email")
-                TextField("Email", text: $email)
+                Text("电子邮箱")
+                TextField("电子邮箱", text: $email)
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
@@ -100,7 +100,7 @@ struct AccountInformationFields: View {
                     .focused($focusedField, equals: .email)
             }
 
-            Picker("Country", selection: Binding(
+            Picker("国家或地区", selection: Binding(
                 get: { configManager.accountCountries.contains { $0.code == currentAccount.country } ? currentAccount.country : 0 },
                 set: { reportSave(configManager.setCountry($0, for: account.persistentId)) }
             )) {
@@ -122,11 +122,11 @@ struct AccountInformationFields: View {
                 save(field)
             }
         }
-        .alert("Error", isPresented: Binding(
+        .alert("错误", isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { errorMessage = nil }
+            Button("确定", role: .cancel) { errorMessage = nil }
         } message: {
             Text(errorMessage ?? "")
         }
@@ -148,14 +148,14 @@ struct AccountInformationFields: View {
             if tokens.count == 3, let year = UInt16(tokens[0]), let month = UInt8(tokens[1]), let day = UInt8(tokens[2]) {
                 reportSave(configManager.setBirthDate(year: year, month: month, day: day, for: account.persistentId))
             } else {
-                errorMessage = "Enter the birthday as YYYY-MM-DD."
+                errorMessage = "请按 YYYY-MM-DD 格式输入生日。"
             }
             birthday = Self.birthdayString(currentAccount)
         }
     }
 
     private func reportSave(_ success: Bool) {
-        if !success { errorMessage = "Unable to save account information." }
+        if !success { errorMessage = "无法保存账户信息。" }
     }
 
     private static func birthdayString(_ account: Account) -> String {
