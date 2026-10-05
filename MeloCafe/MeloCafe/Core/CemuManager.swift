@@ -64,6 +64,17 @@ class CemuManager {
         }
     }
 
+    static func restartCoreForMenu() {
+        ControllerManager.shared.isRunning = false
+        ControllerManager.shared.detachAllFromCore()
+        CemuShutdown()
+
+        initialize()
+        if CPUMode(CemuConfigWrapper.shared().cpuMode) != .interpreter {
+            CemuInitJIT()
+        }
+    }
+
     static func shutdown() {
         ControllerManager.shared.isRunning = false
         ControllerManager.shared.detachAllFromCore()
