@@ -21,8 +21,8 @@ enum CrashDump: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .disabled: return "Disabled"
-        case .enabled: return "Enabled"
+        case .disabled: return "禁用"
+        case .enabled: return "启用"
         }
     }
 }
