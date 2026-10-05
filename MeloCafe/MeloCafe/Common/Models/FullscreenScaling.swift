@@ -21,8 +21,8 @@ enum FullscreenScaling: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .keepAspectRatio: return "Keep Aspect Ratio"
-        case .stretch: return "Stretch"
+        case .keepAspectRatio: return "保持宽高比"
+        case .stretch: return "拉伸"
         }
     }
 }
