@@ -42,7 +42,7 @@ struct GraphicPack: Identifiable {
 
     var group: String {
         let components = virtualPath.split(separator: "/")
-        return components.first.map(String.init) ?? "Other"
+        return components.first.map(String.init) ?? "其他"
     }
 
     init(_ entry: ObjCGraphicPackEntry) {
