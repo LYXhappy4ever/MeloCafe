@@ -16,9 +16,9 @@ enum EmulatedDevice: Int, CaseIterable, Identifiable {
     
     var name: String {
         switch self {
-        case .skylanders: return "Skylanders Portal"
-        case .infinity: return "Disney Infinity Base"
-        case .dimensions: return "LEGO Dimensions Toypad"
+        case .skylanders: return "Skylanders 传送门"
+        case .infinity: return "迪士尼无限底座"
+        case .dimensions: return "乐高次元玩具底座"
         }
     }
     
@@ -27,15 +27,15 @@ enum EmulatedDevice: Int, CaseIterable, Identifiable {
     var slotLabels: [String] {
         switch self {
         case .skylanders:
-            return (1...16).map { "Skylander \($0)" }
+            return (1...16).map { "Skylander 玩偶 \($0)" }
         case .infinity:
-            return ["Play Set / Power Disc", "Power Disc Two", "Power Disc Three",
-                    "Player One", "Player One Ability One", "Player One Ability Two",
-                    "Player Two", "Player Two Ability One", "Player Two Ability Two"]
+            return ["场景套装 / 能量圆盘", "能量圆盘 2", "能量圆盘 3",
+                    "玩家 1", "玩家 1 技能 1", "玩家 1 技能 2",
+                    "玩家 2", "玩家 2 技能 1", "玩家 2 技能 2"]
         case .dimensions:
-            return ["Left Pad: Top", "Center Pad", "Right Pad: Top",
-                    "Left Pad: Bottom Left", "Left Pad: Bottom Right",
-                    "Right Pad: Bottom Left", "Right Pad: Bottom Right"]
+            return ["左侧底座：顶部", "中央底座", "右侧底座：顶部",
+                    "左侧底座：左下", "左侧底座：右下",
+                    "右侧底座：左下", "右侧底座：右下"]
         }
     }
     
@@ -57,22 +57,22 @@ struct EmulatedDevicesView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Device", selection: $device) {
+                    Picker("设备", selection: $device) {
                         ForEach(EmulatedDevice.allCases) { device in
                             Text(device.name).tag(device)
                         }
                     }
-                    Toggle("Emulate Device", isOn: device.enabled)
+                    Toggle("模拟此设备", isOn: device.enabled)
                 }
                 
                 EmulatedDeviceSlotsView(device: device)
                     .id(device)
             }
-            .navigationTitle("Emulated Devices")
+            .navigationTitle("模拟外设")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("完成") { dismiss() }
                 }
             }
         }
@@ -93,16 +93,16 @@ private struct EmulatedDeviceSlotsView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(device.slotLabels[slot])
                         .font(.subheadline.weight(.semibold))
-                    Text(name(at: slot).isEmpty ? "None" : name(at: slot))
+                    Text(name(at: slot).isEmpty ? "无" : name(at: slot))
                         .foregroundStyle(.secondary)
                     
                     HStack(spacing: 20) {
-                        Button("Load") { load(slot: slot) }
-                        NavigationLink("Create") {
+                        Button("加载") { load(slot: slot) }
+                        NavigationLink("创建") {
                             CreateEmulatedFigureView(device: device, slot: slot) { refresh() }
                         }
                         if device == .dimensions {
-                            Menu("Move") {
+                            Menu("移动") {
                                 ForEach(device.slotLabels.indices, id: \.self) { destination in
                                     if destination != slot && name(at: destination).isEmpty {
                                         Button(device.slotLabels[destination]) {
@@ -115,7 +115,7 @@ private struct EmulatedDeviceSlotsView: View {
                             .disabled(name(at: slot).isEmpty || !names.contains(""))
                         }
                         Spacer(minLength: 0)
-                        Button("Clear", role: .destructive) {
+                        Button("清除", role: .destructive) {
                             errorMessage = CemuEmulatedUSBDevices.clear(device.bridge, slot: slot)
                             refresh()
                         }
@@ -127,16 +127,16 @@ private struct EmulatedDeviceSlotsView: View {
                 .padding(.vertical, 4)
             }
         } header: {
-            Text("Figures")
+            Text("玩偶")
         } footer: {
-            Text("Load a .\(device.fileExtension) figure dump or create a figure. Files and game progress are saved in Documents/Emulated Devices. Clear removes a figure from the device and keeps its file.")
+            Text("加载 .\(device.fileExtension) 玩偶数据或创建玩偶。文件和游戏进度保存在 Documents/Emulated Devices 中。清除操作会从设备中移除玩偶并保留文件。")
         }
         .onAppear { refresh() }
-        .alert("Emulated Devices", isPresented: Binding(
+        .alert("模拟外设", isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { errorMessage = nil }
+            Button("确定", role: .cancel) { errorMessage = nil }
         } message: {
             Text(errorMessage ?? "")
         }
@@ -178,7 +178,7 @@ private struct CreateEmulatedFigureView: View {
     let onCreated: () -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var figures: [CemuUSBFigure] = []
-    @State private var selectedName = "Choose a Figure"
+    @State private var selectedName = "选择玩偶"
     @State private var figureID = ""
     @State private var variant = "0"
     @State private var fileName = ""
@@ -186,7 +186,7 @@ private struct CreateEmulatedFigureView: View {
 
     var body: some View {
         Form {
-            Section("Figure") {
+            Section("玩偶") {
                 NavigationLink {
                     EmulatedFigurePicker(figures: figures) { figure in
                         selectedName = figure.name
@@ -198,22 +198,22 @@ private struct CreateEmulatedFigureView: View {
                     Text(selectedName)
                 }
                 
-                TextField("Figure ID", text: $figureID)
+                TextField("玩偶 ID", text: $figureID)
                     .keyboardType(.numberPad)
                 if device == .skylanders {
-                    TextField("Variant", text: $variant)
+                    TextField("变体", text: $variant)
                         .keyboardType(.numberPad)
                 }
             }
             Section {
-                TextField("File Name", text: $fileName)
+                TextField("文件名", text: $fileName)
                     .autocorrectionDisabled()
             } footer: {
-                Text("A new .\(device.fileExtension) file will be saved in Documents/Emulated Devices and loaded into \(device.slotLabels[slot]).")
+                Text("新的 .\(device.fileExtension) 文件将保存在 Documents/Emulated Devices 中，并加载到 \(device.slotLabels[slot])。")
             }
             if device == .dimensions {
                 Section {
-                    Text("Use figure ID 0 to create a blank vehicle or gadget tag for the game to write.")
+                    Text("使用玩偶 ID 0 创建空白载具或道具标签，供游戏写入数据。")
                         .foregroundStyle(.secondary)
                 }
             }
@@ -223,11 +223,11 @@ private struct CreateEmulatedFigureView: View {
                 }
             }
         }
-        .navigationTitle("Create Figure")
+        .navigationTitle("创建玩偶")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Create") { create() }
+                Button("创建") { create() }
                     .disabled(figureID.isEmpty)
             }
         }
@@ -240,22 +240,22 @@ private struct CreateEmulatedFigureView: View {
 
     private func create() {
         guard let id = UInt32(figureID), device == .infinity || id <= UInt16.max else {
-            errorMessage = device == .infinity ? "Enter a valid 32-bit figure ID." : "Enter a figure ID between 0 and 65535."
+            errorMessage = device == .infinity ? "请输入有效的 32 位玩偶 ID。" : "请输入 0 至 65535 之间的玩偶 ID。"
             return
         }
         guard let variantNumber = UInt16(variant) else {
-            errorMessage = "Enter a variant between 0 and 65535."
+            errorMessage = "请输入 0 至 65535 之间的变体编号。"
             return
         }
         do {
-            let file = try EmulatedFigureFiles.newFile(device: device, name: fileName.isEmpty ? "Figure \(id)" : fileName)
+            let file = try EmulatedFigureFiles.newFile(device: device, name: fileName.isEmpty ? "玩偶 \(id)" : fileName)
             if let error = CemuEmulatedUSBDevices.create(device.bridge, figureID: id, variant: variantNumber, path: file.path) {
                 errorMessage = error
                 return
             }
             
             if let error = CemuEmulatedUSBDevices.load(device.bridge, slot: slot, path: file.path) {
-                errorMessage = "The figure was saved, but could not be loaded: \(error)"
+                errorMessage = "玩偶已保存，但无法加载：\(error)"
                 return
             }
             
@@ -285,14 +285,14 @@ private struct EmulatedFigurePicker: View {
             } label: {
                 VStack(alignment: .leading) {
                     Text(figure.name)
-                    Text("ID: \(figure.figureID)")
+                    Text("ID：\(figure.figureID)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
             }
         }
-        .navigationTitle("Choose a Figure")
-        .searchable(text: $search, prompt: "Search names or IDs")
+        .navigationTitle("选择玩偶")
+        .searchable(text: $search, prompt: "搜索名称或 ID")
     }
 }
 
@@ -300,7 +300,7 @@ private enum EmulatedFigureFiles {
     private static func directory(device: EmulatedDevice) throws -> URL {
         let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         
-        let folder = documents.appendingPathComponent("Emulated Devices", isDirectory: true).appendingPathComponent(device.name, isDirectory: true)
+        let folder = documents.appendingPathComponent("模拟外设", isDirectory: true).appendingPathComponent(device.name, isDirectory: true)
         
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         
@@ -314,7 +314,7 @@ private enum EmulatedFigureFiles {
         
         let safeName = name.components(separatedBy: CharacterSet(charactersIn: "/:\\").union(.controlCharacters)).joined(separator: "-").trimmingCharacters(in: .whitespacesAndNewlines)
         
-        return folder.appendingPathComponent(safeName.isEmpty ? "Figure" : safeName).appendingPathExtension(device.fileExtension)
+        return folder.appendingPathComponent(safeName.isEmpty ? "玩偶" : safeName).appendingPathExtension(device.fileExtension)
     }
     
     static func importFigure(_ source: URL, device: EmulatedDevice) throws -> URL {
