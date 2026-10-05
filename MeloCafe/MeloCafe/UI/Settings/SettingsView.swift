@@ -79,14 +79,14 @@ struct SettingsView: View {
             Form {
                 Section {
                     if checkAppEntitlement("get-task-allow") {
-                        Picker("CPU Mode", selection: configManager.interpreter) {
+                        Picker("CPU 模式", selection: configManager.interpreter) {
                             ForEach(CPUMode.allCases, id: \.self) {
                                 Text($0.string)
                             }
                         }
                         .pickerStyle(.menu)
                     } else {
-                        Picker("CPU Mode", selection: .constant(CPUMode.interpreter)) {
+                        Picker("CPU 模式", selection: .constant(CPUMode.interpreter)) {
                             ForEach(CPUMode.allCases, id: \.self) {
                                 Text($0.string)
                             }
@@ -98,12 +98,12 @@ struct SettingsView: View {
                     Text("CPU")
                 }
                 
-                Section("App") {
-                    NavigationLink("App Icon Switcher") {
+                Section("应用") {
+                    NavigationLink("更换应用图标") {
                         AppIconSwitcher()
                     }
                     
-                    Picker("Library View", selection: cardType) {
+                    Picker("游戏库视图", selection: cardType) {
                         ForEach(CardType.allCases, id: \.self) {
                             Text($0.displayName)
                         }
@@ -112,8 +112,8 @@ struct SettingsView: View {
                 }
                 
                 
-                Section("General") {
-                    Picker("Console Language", selection: configManager.consoleLanguage) {
+                Section("通用") {
+                    Picker("主机语言", selection: configManager.consoleLanguage) {
                         ForEach(ConsoleLanguage.allCases, id: \.self) {
                             Text($0.string)
                         }
@@ -122,10 +122,10 @@ struct SettingsView: View {
                     
                     
                     HStack {
-                        Text("Screen Layout")
+                        Text("屏幕布局")
                         
                         Button {
-                            AppAlerts.showSyncAlert(title: "Screen Layout", message: screenLayout.description)
+                            AppAlerts.showSyncAlert(title: "屏幕布局", message: screenLayout.description)
                         } label: {
                             Image(systemName: "info.circle")
                         }
@@ -142,27 +142,27 @@ struct SettingsView: View {
                     }
 
                     if screenLayout == .singleScreen {
-                        Toggle("Show Swap Button (TV <-> Pad)", isOn: $showSwapButton)
+                        Toggle("显示切换按钮（电视 ↔ GamePad）", isOn: $showSwapButton)
                     }
                     
-                    Toggle("Disable Screensaver", isOn: configManager.disableScreensaver)
-                    Toggle("Play Boot Sound", isOn: configManager.playBootSound)
+                    Toggle("防止屏幕自动锁定", isOn: configManager.disableScreensaver)
+                    Toggle("播放启动音效", isOn: configManager.playBootSound)
                 }
                 
-                Section("Account") {
+                Section("账户") {
                     NavigationLink {
                         AccountSettingsView()
                     } label: {
                         HStack {
-                            Text("Account settings")
+                            Text("账户设置")
                             Spacer()
-                            Text(configManager.activeAccount?.displayName ?? "No account selected")
+                            Text(configManager.activeAccount?.displayName ?? "未选择账户")
                                 .foregroundStyle(.secondary)
                         }
                     }
                 }
                 
-                Section("Controllers") {
+                Section("控制器") {
                     ForEach(controllerManager.controllers) { entry in
                         ControllerRow(entry: entry)
                             .contextMenu {
@@ -203,15 +203,15 @@ struct SettingsView: View {
                                 .disabled(!controllerManager.canAdd(id: entry.id))
                             }
                         } label: {
-                            Label("Controllers", systemImage: "chevron.down")
+                            Label("控制器", systemImage: "chevron.down")
                         }
                     }
                     
                 }
                 .environment(\.editMode, .constant(.active))
                 
-                Section("Graphics") {
-                    Picker("Renderer", selection: configManager.renderer) {
+                Section("图形") {
+                    Picker("渲染器", selection: configManager.renderer) {
                         ForEach(Renderer.allCases, id: \.self) {
                             if !$0.string.isEmpty {
                                 Text($0.string)
@@ -219,45 +219,45 @@ struct SettingsView: View {
                         }
                     }
                     
-                    Toggle("VSync", isOn: configManager.vsync)
-                    Toggle("GX2 DrawDone Sync", isOn: configManager.gx2DrawDoneSync)
-                    Toggle("Render Upside Down", isOn: configManager.renderUpsideDown)
-                    Toggle("Async Shader Compile", isOn: configManager.asyncCompile)
-                    Toggle("Shader Cache", isOn: configManager.precompiledShaders)
+                    Toggle("垂直同步", isOn: configManager.vsync)
+                    Toggle("GX2 绘制完成同步", isOn: configManager.gx2DrawDoneSync)
+                    Toggle("上下翻转画面", isOn: configManager.renderUpsideDown)
+                    Toggle("异步编译着色器", isOn: configManager.asyncCompile)
+                    Toggle("着色器缓存", isOn: configManager.precompiledShaders)
                     
-                    Picker("Upscale Filter", selection: configManager.upscaleFilter) {
+                    Picker("放大滤镜", selection: configManager.upscaleFilter) {
                         ForEach(UpscalingFilter.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    Picker("Downscale Filter", selection: configManager.downscaleFilter) {
+                    Picker("缩小滤镜", selection: configManager.downscaleFilter) {
                         ForEach(UpscalingFilter.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    Picker("Fullscreen Scaling", selection: configManager.fullscreenScaling) {
+                    Picker("全屏缩放", selection: configManager.fullscreenScaling) {
                         ForEach(FullscreenScaling.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
                     if configManager.renderer.wrappedValue == .vulkan {
-                        Toggle("Accurate Barriers", isOn: configManager.vkAccurateBarriers)
+                        Toggle("精确同步屏障", isOn: configManager.vkAccurateBarriers)
                     }
                     
                     if configManager.renderer.wrappedValue == .metal {
-                        Toggle("Force Mesh Shaders", isOn: configManager.forceMeshShaders)
-                        Toggle("Framebuffer Fetch", isOn: configManager.framebufferFetch)
+                        Toggle("强制使用网格着色器", isOn: configManager.forceMeshShaders)
+                        Toggle("帧缓冲读取", isOn: configManager.framebufferFetch)
                     }
                     
-                    Toggle("Override App Gamma", isOn: configManager.overrideAppGammaPreference)
+                    Toggle("覆盖应用伽马设置", isOn: configManager.overrideAppGammaPreference)
                     
                     if configManager.overrideAppGammaPreference.wrappedValue {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Override Gamma")
+                                Text("覆盖伽马值")
                                 Spacer()
                                 Text(String(format: "%.2f", configManager.overrideGammaValue.wrappedValue))
                                     .foregroundStyle(.secondary)
@@ -268,7 +268,7 @@ struct SettingsView: View {
                     
                     VStack(alignment: .leading) {
                         HStack {
-                            Text("Display Gamma")
+                            Text("显示伽马值")
                             Spacer()
                             Text(String(format: "%.2f", configManager.userDisplayGamma.wrappedValue))
                                 .foregroundStyle(.secondary)
@@ -277,131 +277,131 @@ struct SettingsView: View {
                     }
                     
                     
-                    NavigationLink("All Graphic Packs") {
+                    NavigationLink("所有图形包") {
                         GraphicPacksView()
                     }
                 }
                 
-                Section("Audio") {
-                    Toggle("TV Audio", isOn: configManager.tvAudioEnabled)
-                    Toggle("Pad Audio", isOn: configManager.padAudioEnabled)
+                Section("音频") {
+                    Toggle("电视音频", isOn: configManager.tvAudioEnabled)
+                    Toggle("GamePad 音频", isOn: configManager.padAudioEnabled)
                     
-                    Picker("TV Channels", selection: configManager.tvChannels) {
+                    Picker("电视声道", selection: configManager.tvChannels) {
                         ForEach(AudioChannels.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    Picker("Pad Channels", selection: configManager.padChannels) {
+                    Picker("GamePad 声道", selection: configManager.padChannels) {
                         ForEach(AudioChannels.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    Picker("Input Channels", selection: configManager.inputChannels) {
+                    Picker("输入声道", selection: configManager.inputChannels) {
                         ForEach(AudioChannels.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    Toggle("Microphone", isOn: configManager.microphoneEnabled)
+                    Toggle("麦克风", isOn: configManager.microphoneEnabled)
                     
                     VStack(alignment: .leading) {
-                        Text("TV Volume: \(Int(configManager.tvVolume.wrappedValue))%")
+                        Text("电视音量：\(Int(configManager.tvVolume.wrappedValue))%")
                         Slider(value: configManager.tvVolume, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Pad Volume: \(Int(configManager.padVolume.wrappedValue))%")
+                        Text("GamePad 音量：\(Int(configManager.padVolume.wrappedValue))%")
                         Slider(value: configManager.padVolume, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Input Volume: \(Int(configManager.inputVolume.wrappedValue))%")
+                        Text("输入音量：\(Int(configManager.inputVolume.wrappedValue))%")
                         Slider(value: configManager.inputVolume, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Portal Volume: \(Int(configManager.portalVolume.wrappedValue))%")
+                        Text("传送门音量：\(Int(configManager.portalVolume.wrappedValue))%")
                         Slider(value: configManager.portalVolume, in: 0...100, step: 1)
                     }
                 }
                 
-                Section("Overlay") {
-                    Picker("Position", selection: configManager.overlayPosition) {
+                Section("屏幕信息") {
+                    Picker("位置", selection: configManager.overlayPosition) {
                         ForEach(ScreenPosition.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    TextField("Text Color", text: configManager.overlayTextColorHex)
+                    TextField("文字颜色", text: configManager.overlayTextColorHex)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
                     VStack(alignment: .leading) {
-                        Text("Text Scale: \(Int(configManager.overlayTextScale.wrappedValue))%")
+                        Text("文字缩放：\(Int(configManager.overlayTextScale.wrappedValue))%")
                         Slider(value: configManager.overlayTextScale, in: 50...200, step: 25)
                     }
                     
-                    Toggle("FPS", isOn: configManager.overlayFPS)
-                    Toggle("CPU Mode", isOn: configManager.overlayCPUMode)
-                    Toggle("Draw Calls", isOn: configManager.overlayDrawcalls)
-                    Toggle("CPU Usage", isOn: configManager.overlayCPUUsage)
-                    Toggle("CPU Per Core Usage", isOn: configManager.overlayCPUPerCoreUsage)
-                    Toggle("RAM Usage", isOn: configManager.overlayRAMUsage)
-                    Toggle("VRAM Usage", isOn: configManager.overlayVRAMUsage)
-                    Toggle("Debug", isOn: configManager.overlayDebug)
+                    Toggle("帧率", isOn: configManager.overlayFPS)
+                    Toggle("CPU 模式", isOn: configManager.overlayCPUMode)
+                    Toggle("绘制调用次数", isOn: configManager.overlayDrawcalls)
+                    Toggle("CPU 使用率", isOn: configManager.overlayCPUUsage)
+                    Toggle("各 CPU 核心使用率", isOn: configManager.overlayCPUPerCoreUsage)
+                    Toggle("内存使用量", isOn: configManager.overlayRAMUsage)
+                    Toggle("显存使用量", isOn: configManager.overlayVRAMUsage)
+                    Toggle("调试信息", isOn: configManager.overlayDebug)
                 }
                 
-                Section("Notifications") {
-                    Picker("Position", selection: configManager.notificationPosition) {
+                Section("通知") {
+                    Picker("位置", selection: configManager.notificationPosition) {
                         ForEach(ScreenPosition.allCases, id: \.self) {
                             Text($0.string)
                         }
                     }
                     
-                    TextField("Text Color", text: configManager.notificationTextColorHex)
+                    TextField("文字颜色", text: configManager.notificationTextColorHex)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
                     VStack(alignment: .leading) {
-                        Text("Text Scale: \(Int(configManager.notificationTextScale.wrappedValue))%")
+                        Text("文字缩放：\(Int(configManager.notificationTextScale.wrappedValue))%")
                         Slider(value: configManager.notificationTextScale, in: 50...200, step: 25)
                     }
                     
-                    Toggle("Controller Profiles", isOn: configManager.notificationControllerProfiles)
-                    Toggle("Low Battery", isOn: configManager.notificationControllerBattery)
-                    Toggle("Shader Compiling", isOn: configManager.notificationShaderCompiling)
-                    Toggle("Friends", isOn: configManager.notificationFriends)
+                    Toggle("控制器配置", isOn: configManager.notificationControllerProfiles)
+                    Toggle("电量不足", isOn: configManager.notificationControllerBattery)
+                    Toggle("着色器编译", isOn: configManager.notificationShaderCompiling)
+                    Toggle("好友", isOn: configManager.notificationFriends)
                 }
                 
-                Section("Input Services") {
-                    Toggle("Disable Motion", isOn: configManager.disableMotion)
+                Section("输入服务") {
+                    Toggle("禁用体感输入", isOn: configManager.disableMotion)
                     
-                    //TextField("DSU Host", text: configManager.dsuHost)
+                    //TextField("DSU 主机", text: configManager.dsuHost)
                     //    .textInputAutocapitalization(.never)
                     //    .autocorrectionDisabled()
                     
-                    //TextField("DSU Port", text: configManager.dsuPortString)
+                    //TextField("DSU 端口", text: configManager.dsuPortString)
                     //    .keyboardType(.numberPad)
                 }
                 
-                Section("Emulated Devices") {
-                    Toggle("Skylanders Portal", isOn: configManager.emulateSkylanderPortal)
-                    Toggle("Disney Infinity Base", isOn: configManager.emulateInfinityBase)
-                    Toggle("LEGO Dimensions Toypad", isOn: configManager.emulateDimensionsToypad)
+                Section("模拟外设") {
+                    Toggle("Skylanders 传送门", isOn: configManager.emulateSkylanderPortal)
+                    Toggle("迪士尼无限底座", isOn: configManager.emulateInfinityBase)
+                    Toggle("乐高次元玩具底座", isOn: configManager.emulateDimensionsToypad)
                     Button {
                         showingEmulatedDevices = true
                     } label: {
-                        Label("Manage Figures", systemImage: "externaldrive.connected.to.line.below")
+                        Label("管理玩偶", systemImage: "externaldrive.connected.to.line.below")
                     }
                     .sheet(isPresented: $showingEmulatedDevices) {
                         EmulatedDevicesView()
                     }
                 }
                 
-                Section("Load Game") {
-                    Button("Load from Folder") {
+                Section("加载游戏") {
+                    Button("从文件夹加载") {
                         FileImporterManager.shared.importFiles(
                             types: [.folder],
                             allowMultiple: false,
@@ -411,7 +411,7 @@ struct SettingsView: View {
                         }
                     }
                     
-                    Button("Load from File") {
+                    Button("从文件加载") {
                         FileImporterManager.shared.importFiles(
                             types: [.item],
                             allowMultiple: false,
@@ -422,7 +422,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Settings") // iOS 15 seems to expect a navigation title, so we'll put this here. -stossy11
+            .navigationTitle("设置") // iOS 15 seems to expect a navigation title, so we'll put this here. -stossy11
         }
     }
     
