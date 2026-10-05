@@ -22,9 +22,9 @@ enum AudioChannels: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .mono: return "Mono"
-        case .stereo: return "Stereo"
-        case .surround: return "Surround"
+        case .mono: return "单声道"
+        case .stereo: return "立体声"
+        case .surround: return "环绕声"
         }
     }
 }
