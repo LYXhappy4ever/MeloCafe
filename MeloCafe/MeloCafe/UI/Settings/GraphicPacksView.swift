@@ -46,7 +46,7 @@ struct GraphicPacksView: View {
                     Button {
                         viewModel.downloadPacks()
                     } label: {
-                        Label("Download latest graphic packs", systemImage: "arrow.down.circle")
+                        Label("下载最新图形包", systemImage: "arrow.down.circle")
                     }
                 }
                 
@@ -65,8 +65,8 @@ struct GraphicPacksView: View {
                 }
             }
         }
-        .searchable(text: $searchText, prompt: "Search graphic packs")
-        .navigationTitle("Graphic Packs")
+        .searchable(text: $searchText, prompt: "搜索图形包")
+        .navigationTitle("图形包")
         .onAppear {
             viewModel.refresh()
         }
@@ -90,7 +90,7 @@ struct GraphicPackRow: View {
             ForEach(pack.presetCategories, id: \.self) { category in
                 let presets = pack.visiblePresets(for: category)
                 if !presets.isEmpty {
-                    Picker(category.isEmpty ? "Preset" : category, selection: presetBinding(category: category)) {
+                    Picker(category.isEmpty ? "预设" : category, selection: presetBinding(category: category)) {
                         ForEach(presets) { preset in
                             Text(preset.name).tag(preset.name)
                         }
@@ -157,7 +157,7 @@ class GraphicPacksViewModel: ObservableObject {
         isDownloading = true
         downloadError = nil
         downloadProgress = 0
-        downloadStage = "Checking for updates..."
+        downloadStage = "正在检查更新…"
         
         let apiURL = URL(string: "https://api.github.com/repos/cemu-project/cemu_graphic_packs/releases/latest")!
         var request = URLRequest(url: apiURL)
@@ -167,7 +167,7 @@ class GraphicPacksViewModel: ObservableObject {
             guard let self else { return }
             
             guard let data, error == nil else {
-                self.finish(error: "Failed to connect to server")
+                self.finish(error: "无法连接服务器")
                 return
             }
             
@@ -177,14 +177,14 @@ class GraphicPacksViewModel: ObservableObject {
                   let firstAsset = assets.first,
                   let downloadURLString = firstAsset["browser_download_url"] as? String,
                   let downloadURL = URL(string: downloadURLString) else {
-                self.finish(error: "Failed to parse server response")
+                self.finish(error: "无法解析服务器响应")
                 return
             }
             
             if let installed = self.manager?.installedVersion(),
                installed.caseInsensitiveCompare(releaseName) == .orderedSame {
                 DispatchQueue.main.async {
-                    self.downloadStage = "Already up to date"
+                    self.downloadStage = "已是最新版本"
                     self.downloadProgress = 1.0
                     self.isDownloading = false
                 }
@@ -192,7 +192,7 @@ class GraphicPacksViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.downloadStage = "Downloading..."
+                self.downloadStage = "正在下载…"
             }
             
             self.downloadZIP(from: downloadURL, version: releaseName)
@@ -211,19 +211,19 @@ class GraphicPacksViewModel: ObservableObject {
             guard let self else { return }
             
             guard let tempURL, error == nil else {
-                self.finish(error: "Failed to download graphic packs")
+                self.finish(error: "图形包下载失败")
                 return
             }
             
             DispatchQueue.main.async {
-                self.downloadStage = "Extracting..."
+                self.downloadStage = "正在解压…"
                 self.downloadProgress = 0
             }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     guard let basePath = self.manager?.graphicPacksBasePath() else {
-                        self.finish(error: "Could not determine graphic packs path")
+                        self.finish(error: "无法确定图形包路径")
                         return
                     }
                     
