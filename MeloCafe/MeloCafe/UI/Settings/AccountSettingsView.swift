@@ -15,12 +15,12 @@ struct AccountSettingsView: View {
     @State private var onlineDetails: String?
     @State private var informationExpanded = false
     @State private var onlineValid = false
-    @State private var onlineStatus = "No account selected"
+    @State private var onlineStatus = "未选择账户"
 
     var body: some View {
         Form {
-            Section("Account") {
-                Picker("Active account", selection: Binding(
+            Section("账户") {
+                Picker("当前账户", selection: Binding(
                     get: { configManager.activeAccountPersistentId },
                     set: { configManager.setActiveAccount($0) }
                 )) {
@@ -32,13 +32,13 @@ struct AccountSettingsView: View {
                 .disabled(configManager.accountControlsLocked || configManager.accounts.isEmpty)
 
                 HStack {
-                    Button("Create") { showingCreateAccount = true }
+                    Button("创建") { showingCreateAccount = true }
                         .disabled(!configManager.canCreateAccount)
                         .sheet(isPresented: $showingCreateAccount) {
                             CreateAccountView()
                         }
                     Spacer()
-                    Button("Delete", role: .destructive) { accountToDelete = configManager.activeAccount }
+                    Button("删除", role: .destructive) { accountToDelete = configManager.activeAccount }
                         .disabled(!configManager.canDeleteSelectedAccount)
                 }
                 .buttonStyle(.borderless)
@@ -62,12 +62,12 @@ struct AccountSettingsView: View {
                     .accessibilityHint(service.accountHelp)
                 }
             } header: {
-                Text("Network Service\(configManager.activeAccount.map { " (\($0.displayName))" } ?? "")")
+                Text("网络服务\(configManager.activeAccount.map { " (\($0.displayName))" } ?? "")")
             } footer: {
                 Text((onlineValid ? configManager.networkService.wrappedValue : .offline).accountHelp)
             }
 
-            Section("Online play requirements") {
+            Section("联机条件") {
                 Button {
                     if let account = configManager.activeAccount {
                         onlineDetails = configManager.onlineValidationDetails(for: account.persistentId)
@@ -81,22 +81,22 @@ struct AccountSettingsView: View {
                     }
                 }
                 .disabled(configManager.activeAccount == nil)
-                Link("Online play tutorial", destination: URL(string: "https://cemu.info/online-guide")!)
+                Link("联机教程", destination: URL(string: "https://cemu.info/online-guide")!)
             }
 
             Section {
-                DisclosureGroup("Account information", isExpanded: $informationExpanded) {
+                DisclosureGroup("账户信息", isExpanded: $informationExpanded) {
                     if let account = configManager.activeAccount {
                         AccountInformationFields(account: account)
                             .id(account.persistentId)
                             .padding(.vertical, 8)
                     } else {
-                        Text("No account selected").foregroundStyle(.secondary)
+                        Text("未选择账户").foregroundStyle(.secondary)
                     }
                 }
             }
         }
-        .navigationTitle("Account")
+        .navigationTitle("账户")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             configManager.reloadAccounts()
@@ -104,35 +104,35 @@ struct AccountSettingsView: View {
         }
         .onChange(of: configManager.activeAccountPersistentId) { _ in refreshOnlineStatus() }
         .onChange(of: configManager.accounts) { _ in refreshOnlineStatus() }
-        .alert("Confirmation", isPresented: Binding(
+        .alert("确认", isPresented: Binding(
             get: { accountToDelete != nil },
             set: { if !$0 { accountToDelete = nil } }
         )) {
-            Button("Yes", role: .destructive) {
+            Button("是", role: .destructive) {
                 if let account = accountToDelete {
                     errorMessage = configManager.deleteAccount(persistentId: account.persistentId)
                 }
                 accountToDelete = nil
             }
-            Button("No", role: .cancel) { accountToDelete = nil }
+            Button("否", role: .cancel) { accountToDelete = nil }
         } message: {
             if let account = accountToDelete {
-                Text("Are you sure you want to delete the account \(account.displayName) with id \(account.persistentIdHex)?")
+                Text("确定删除账户 \(account.displayName)（ID：\(account.persistentIdHex)）吗？")
             }
         }
-        .alert("Error", isPresented: Binding(
+        .alert("错误", isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
-            Button("OK", role: .cancel) { errorMessage = nil }
+            Button("确定", role: .cancel) { errorMessage = nil }
         } message: {
             Text(errorMessage ?? "")
         }
-        .alert("Online Status", isPresented: Binding(
+        .alert("联机状态", isPresented: Binding(
             get: { onlineDetails != nil },
             set: { if !$0 { onlineDetails = nil } }
         )) {
-            Button("OK", role: .cancel) { onlineDetails = nil }
+            Button("确定", role: .cancel) { onlineDetails = nil }
         } message: {
             Text(onlineDetails ?? "")
         }
@@ -141,7 +141,7 @@ struct AccountSettingsView: View {
     private func refreshOnlineStatus() {
         guard let account = configManager.activeAccount else {
             onlineValid = false
-            onlineStatus = "No account selected"
+            onlineStatus = "未选择账户"
             return
         }
         onlineValid = configManager.isOnlineFullyValid(for: account.persistentId)
@@ -152,19 +152,19 @@ struct AccountSettingsView: View {
 private extension NetworkService {
     var accountTitle: String {
         switch self {
-        case .offline: return "Offline"
+        case .offline: return "离线"
         case .nintendo: return "Nintendo"
         case .pretendo: return "Pretendo"
-        case .custom: return "Custom"
+        case .custom: return "自定义"
         }
     }
 
     var accountHelp: String {
         switch self {
-        case .offline: return "Online functionality disabled for this account"
-        case .nintendo: return "Connect to the official Nintendo Network Service"
-        case .pretendo: return "Connect to the Pretendo Network Service"
-        case .custom: return "Connect to a custom Network Service (configured via network_services.xml)"
+        case .offline: return "此账户已禁用联机功能"
+        case .nintendo: return "连接任天堂官方网络服务"
+        case .pretendo: return "连接 Pretendo 网络服务"
+        case .custom: return "连接自定义网络服务（通过 network_services.xml 配置）"
         }
     }
 }
