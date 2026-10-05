@@ -346,6 +346,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeloCafe/Depedencies",
+					"$(PROJECT_DIR)/Prebuilt",
 				);
 				GCC_OPTIMIZATION_LEVEL = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -407,6 +408,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeloCafe/Depedencies",
+					"$(PROJECT_DIR)/Prebuilt",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeloCafe/Assets/Info.plist;
