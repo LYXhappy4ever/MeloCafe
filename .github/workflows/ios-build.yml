@@ -19,6 +19,19 @@ jobs:
             -project MeloCafe/MeloCafe.xcodeproj \
             -scheme MeloCafe
 
+      - name: Restore prebuilt Cemu framework
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3             https://github.com/stossy11/MeloCafe/releases/download/1.0/MeloCafe.ipa             -o /tmp/MeloCafe.ipa
+          rm -rf /tmp/melocafe-official
+          mkdir -p /tmp/melocafe-official
+          unzip -q /tmp/MeloCafe.ipa 'Payload/MeloCafe.app/Frameworks/Cemu.framework/*' -d /tmp/melocafe-official
+          rm -rf MeloCafe/Prebuilt/Cemu.framework
+          mkdir -p MeloCafe/Prebuilt
+          cp -R /tmp/melocafe-official/Payload/MeloCafe.app/Frameworks/Cemu.framework MeloCafe/Prebuilt/Cemu.framework
+          test -f MeloCafe/Prebuilt/Cemu.framework/Cemu
+
       - name: Build unsigned iOS app
         run: |
           xcodebuild \
