@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AppIconSwitcher: View {
     @State var icons: [AppIconPosition] = [
-        .init(creator: "Transistor", icons: [.init(id: "AppIcon", name: "App Icon", def: true), .init(id: "AppIcon-Classic", name: "Classic App Icon")]),
+        .init(creator: "Transistor", icons: [.init(id: "AppIcon", name: "应用图标", def: true), .init(id: "AppIcon-Classic", name: "经典应用图标")]),
         .init(creator: "sky (@dootskyre)", icons: [
             .init(id: "PixelCafeAppIcon", name: "PixelCafé")
         ])
@@ -40,7 +40,7 @@ struct AppIconSwitcher: View {
                 }
             }
         }
-        .navigationTitle("App Icon Switcher")
+        .navigationTitle("更换应用图标")
     }
 }
 
