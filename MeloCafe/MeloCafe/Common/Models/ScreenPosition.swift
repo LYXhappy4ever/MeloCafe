@@ -26,13 +26,13 @@ enum ScreenPosition: Int, CaseIterable {
 
     var string: String {
         switch self {
-        case .disabled: return "Disabled"
-        case .topLeft: return "Top Left"
-        case .topCenter: return "Top Center"
-        case .topRight: return "Top Right"
-        case .bottomLeft: return "Bottom Left"
-        case .bottomCenter: return "Bottom Center"
-        case .bottomRight: return "Bottom Right"
+        case .disabled: return "禁用"
+        case .topLeft: return "左上"
+        case .topCenter: return "顶部居中"
+        case .topRight: return "右上"
+        case .bottomLeft: return "左下"
+        case .bottomCenter: return "底部居中"
+        case .bottomRight: return "右下"
         }
     }
 }
